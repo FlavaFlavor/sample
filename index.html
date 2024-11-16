@@ -15,23 +15,38 @@
 
         .slot-machine {
             margin: 50px auto;
-            width: 300px;
+            width: 400px;
             height: 200px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .reel {
+            width: 120px;
+            height: 180px;
             border: 5px solid #333;
             background-color: #fff;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
+            overflow: hidden;
             position: relative;
         }
 
-        .result {
-            font-size: 3rem;
+        .reel-content {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .symbol {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #333;
+            border-bottom: 1px solid #ccc;
         }
 
         .spin-button {
@@ -49,36 +64,78 @@
         .spin-button:hover {
             background-color: #218838;
         }
+
+        /* リール回転のアニメーション */
+        @keyframes spin {
+            0% { top: 0; }
+            100% { top: -360px; }
+        }
     </style>
 </head>
 <body>
     <h1>スロットマシン</h1>
     <div class="slot-machine">
-        <div id="result" class="result">？？？</div>
+        <div class="reel">
+            <div id="reel1" class="reel-content">
+                <div class="symbol">10,000円</div>
+                <div class="symbol">5,000円</div>
+                <div class="symbol">1,000円</div>
+            </div>
+        </div>
+        <div class="reel">
+            <div id="reel2" class="reel-content">
+                <div class="symbol">500円</div>
+                <div class="symbol">100円</div>
+                <div class="symbol">10,000円</div>
+            </div>
+        </div>
+        <div class="reel">
+            <div id="reel3" class="reel-content">
+                <div class="symbol">1,000円</div>
+                <div class="symbol">500円</div>
+                <div class="symbol">5,000円</div>
+            </div>
+        </div>
     </div>
     <button class="spin-button" onclick="spin()">スピン！</button>
 
     <script>
-        // 賞金リスト
-        const prizes = [
-            "1等: 10,000円",
-            "2等: 5,000円",
-            "3等: 1,000円",
-            "4等: 500円",
-            "5等: 100円"
-        ];
-
-        // スロットをスピンする関数
+        // スロットリールをスピンさせる関数
         function spin() {
-            // スロットを回しているようなアニメーション
-            const resultElement = document.getElementById("result");
-            resultElement.textContent = "スピン中...";
-            
-            // 少し待って結果を表示
+            const reel1 = document.getElementById("reel1");
+            const reel2 = document.getElementById("reel2");
+            const reel3 = document.getElementById("reel3");
+
+            // リールを回転させるCSSアニメーションを適用
+            reel1.style.animation = "spin 1s infinite linear";
+            reel2.style.animation = "spin 1.5s infinite linear";
+            reel3.style.animation = "spin 2s infinite linear";
+
+            // アニメーションを2秒後に停止し、結果を表示
             setTimeout(() => {
-                const randomIndex = Math.floor(Math.random() * prizes.length);
-                resultElement.textContent = prizes[randomIndex];
-            }, 2000);
+                reel1.style.animation = "";
+                reel2.style.animation = "";
+                reel3.style.animation = "";
+
+                // ランダムな位置にリールをセット
+                const symbols1 = ['10,000円', '5,000円', '1,000円'];
+                const symbols2 = ['500円', '100円', '10,000円'];
+                const symbols3 = ['1,000円', '500円', '5,000円'];
+
+                // ランダムなインデックスを取得してリールを更新
+                const randomIndex1 = Math.floor(Math.random() * symbols1.length);
+                const randomIndex2 = Math.floor(Math.random() * symbols2.length);
+                const randomIndex3 = Math.floor(Math.random() * symbols3.length);
+
+                reel1.children[0].textContent = symbols1[randomIndex1];
+                reel2.children[0].textContent = symbols2[randomIndex2];
+                reel3.children[0].textContent = symbols3[randomIndex3];
+
+                // リールの位置をリセット
+                reel1.style.top = `-${randomIndex1 * 60}px`;
+                reel2.style.top = `-${randomIndex2 * 60}px`;
+                reel3.style.top = `-${randomIndex3 * 60}px`;
+            }, 2000); // 2秒後に停止
         }
     </script>
 </body>
