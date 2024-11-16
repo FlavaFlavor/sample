@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡単スロットゲーム</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #slot { font-size: 50px; }
+        button { margin-top: 20px; padding: 10px 20px; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <h1>スロットゲーム</h1>
+    <div id="slot">🍒🍋🍇</div>
+    <button onclick="spin()">回す</button>
+
+    <script>
+        function spin() {
+            const items = ['🍒', '🍋', '🍇', '🍉', '🍌'];
+            const slot = document.getElementById('slot');
+            slot.innerHTML = items[Math.floor(Math.random() * items.length)] +
+                             items[Math.floor(Math.random() * items.length)] +
+                             items[Math.floor(Math.random() * items.length)];
+        }
+    </script>
+</body>
+</html>
