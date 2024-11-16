@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>豪華なスロットマシン</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #282c34;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 2.5rem;
+            color: #ffc107;
+        }
+
+        .slot-machine {
+            margin: 50px auto;
+            width: 200px;
+            height: 200px;
+            border: 8px solid #ffc107; /* ゴールド風の枠 */
+            border-radius: 15px;
+            background: linear-gradient(145deg, #333, #000);
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.8);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reel-content {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .symbol {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px #ffc107;
+        }
+
+        .spin-button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .spin-button:hover {
+            background-color: #218838;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+        }
+
+        /* リール回転のアニメーション */
+        @keyframes spin {
+            0% { top: 0; }
+            100% { top: -180px; }
+        }
+
+        /* スピン中のリールアニメーション */
+        .spinning {
+            animation: spin 0.8s infinite linear;
+        }
+    </style>
+</head>
+<body>
+    <h1>豪華なスロットマシン</h1>
+    <div class="slot-machine">
+        <div id="reel" class="reel-content">
+            <div class="symbol">10,000円</div>
+            <div class="symbol">5,000円</div>
+            <div class="symbol">1,000円</div>
+            <div class="symbol">500円</div>
+            <div class="symbol">100円</div>
+        </div>
+    </div>
+    <button class="spin-button" onclick="spin()">スピン！</button>
+
+    <script>
+        // スロットリールをスピンさせる関数
+        function spin() {
+            const reel = document.getElementById("reel");
+
+            // リールをスピンさせるクラスを追加
+            reel.classList.add("spinning");
+
+            // アニメーションを2秒後に停止し、結果を表示
+            setTimeout(() => {
+                reel.classList.remove("spinning");
+
+                // ランダムにリールの位置を決定
+                const symbols = ['10,000円', '5,000円', '1,000円', '500円', '100円'];
+                const randomIndex = Math.floor(Math.random() * symbols.length);
+
+                // リールの内容を更新
+                reel.style.top = `-${randomIndex * 60}px`;
+
+                // リールに表示されるシンボルを更新
+                reel.children[0].textContent = symbols[randomIndex];
+            }, 2000); // 2秒後に停止
+        }
+    </script>
+</body>
+</html>
