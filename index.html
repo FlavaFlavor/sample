@@ -35,7 +35,6 @@
             position: absolute;
             top: 0;
             width: 100%;
-            height: 100%;
         }
 
         .symbol {
@@ -68,7 +67,12 @@
         /* リール回転のアニメーション */
         @keyframes spin {
             0% { top: 0; }
-            100% { top: -360px; }
+            100% { top: -180px; }
+        }
+
+        /* スピン中のリールアニメーション */
+        .spinning {
+            animation: spin 0.5s infinite linear;
         }
     </style>
 </head>
@@ -106,18 +110,18 @@
             const reel2 = document.getElementById("reel2");
             const reel3 = document.getElementById("reel3");
 
-            // リールを回転させるCSSアニメーションを適用
-            reel1.style.animation = "spin 1s infinite linear";
-            reel2.style.animation = "spin 1.5s infinite linear";
-            reel3.style.animation = "spin 2s infinite linear";
+            // リールをスピンさせるクラスを追加
+            reel1.classList.add("spinning");
+            reel2.classList.add("spinning");
+            reel3.classList.add("spinning");
 
             // アニメーションを2秒後に停止し、結果を表示
             setTimeout(() => {
-                reel1.style.animation = "";
-                reel2.style.animation = "";
-                reel3.style.animation = "";
+                reel1.classList.remove("spinning");
+                reel2.classList.remove("spinning");
+                reel3.classList.remove("spinning");
 
-                // ランダムな位置にリールをセット
+                // ランダムにリールの位置を決定
                 const symbols1 = ['10,000円', '5,000円', '1,000円'];
                 const symbols2 = ['500円', '100円', '10,000円'];
                 const symbols3 = ['1,000円', '500円', '5,000円'];
@@ -127,14 +131,14 @@
                 const randomIndex2 = Math.floor(Math.random() * symbols2.length);
                 const randomIndex3 = Math.floor(Math.random() * symbols3.length);
 
-                reel1.children[0].textContent = symbols1[randomIndex1];
-                reel2.children[0].textContent = symbols2[randomIndex2];
-                reel3.children[0].textContent = symbols3[randomIndex3];
-
-                // リールの位置をリセット
+                // リールの内容を更新
                 reel1.style.top = `-${randomIndex1 * 60}px`;
                 reel2.style.top = `-${randomIndex2 * 60}px`;
                 reel3.style.top = `-${randomIndex3 * 60}px`;
+
+                reel1.children[0].textContent = symbols1[randomIndex1];
+                reel2.children[0].textContent = symbols2[randomIndex2];
+                reel3.children[0].textContent = symbols3[randomIndex3];
             }, 2000); // 2秒後に停止
         }
     </script>
