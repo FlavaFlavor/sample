@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>金額スロットマシン</title>
+    <title>5マススロットマシン</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -23,7 +23,7 @@
 
         .slot-machine {
             margin: 50px auto;
-            width: 320px;
+            width: 400px;
             height: 100px;
             border: 5px solid #ffc107; /* ゴールドの枠 */
             border-radius: 10px;
@@ -53,6 +53,13 @@
             text-align: center;
         }
 
+        .symbol {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffc107;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
         .spin-button {
             margin-top: 20px;
             padding: 15px 30px;
@@ -71,6 +78,14 @@
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
         }
 
+        /* 当選メッセージの表示エリア */
+        .result-message {
+            margin-top: 30px;
+            font-size: 2rem;
+            color: #ffc107;
+            text-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
+        }
+
         /* リールの数字を回転させるアニメーション */
         @keyframes spin {
             0% { transform: translateY(0); }
@@ -81,6 +96,7 @@
 <body>
     <h1>金額スロットマシン</h1>
     <div class="slot-machine">
+        <div class="reel" id="symbol"><span class="symbol">￥</span></div> <!-- 左側の固定シンボル -->
         <div class="reel" id="reel1">
             <span>0</span>
             <span>1</span>
@@ -132,19 +148,38 @@
     </div>
     <button class="spin-button" onclick="spin()">スピン！</button>
 
+    <div id="result" class="result-message"></div>
+
     <script>
         // スロットリールをスピンさせる関数
         function spin() {
-            const targetValues = [1, 0, 0, 0]; // 表示したい金額（例: ￥1000）
+            const targetValues = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]; // ランダムな4つの数字
 
             document.querySelectorAll('.reel').forEach((reel, index) => {
+                if (index === 0) return; // 一番左の￥は固定なのでスキップ
+
                 const randomDuration = Math.random() * 2 + 3; // 3秒〜5秒のランダムなスピン時間
                 reel.style.transition = `transform ${randomDuration}s ease-out`;
                 
                 // 最終目的の数字に合わせてリールを停止させる
-                const targetPosition = targetValues[index] * -100; // 1桁あたりの高さを100pxとする
+                const targetPosition = targetValues[index - 1] * -100; // 1桁あたりの高さを100pxとする
                 reel.style.transform = `translateY(${targetPosition}px)`;
             });
+
+            // 当選結果を表示
+            setTimeout(() => {
+                const amount = targetValues.join('');
+                const result = document.getElementById("result");
+
+                // 当選メッセージを表示
+                if (amount === "7777") {
+                    result.innerHTML = `おめでとう！1等当選！ ￥${amount}`;
+                } else if (amount.startsWith("7")) {
+                    result.innerHTML = `おめでとう！2等当選！ ￥${amount}`;
+                } else {
+                    result.innerHTML = `￥${amount} 当選！`;
+                }
+            }, 4000); // 4秒後に結果を表示
         }
     </script>
 </body>
