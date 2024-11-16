@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>豪華な外観のスロットマシン</title>
+    <title>金額スロットマシン</title>
     <style>
         body {
-            font-family: 'Impact', sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #000;
             color: white;
             text-align: center;
@@ -23,43 +23,34 @@
 
         .slot-machine {
             margin: 50px auto;
-            width: 300px;
-            height: 200px;
+            width: 320px;
+            height: 100px;
             border: 5px solid #ffc107; /* ゴールドの枠 */
-            border-radius: 20px;
+            border-radius: 10px;
             background: linear-gradient(145deg, #444, #000);
             box-shadow: 0 0 30px rgba(255, 193, 7, 0.8);
             overflow: hidden;
-            position: relative;
-        }
-
-        .reel {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: transform 1s ease-out;
-        }
-
-        .symbol {
-            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .reel {
+            width: 60px;
+            height: 100px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 5px;
+        }
+
+        .reel span {
+            display: block;
             font-size: 3rem;
             font-weight: bold;
             color: #fff;
-            background: linear-gradient(145deg, #333, #111);
-            border-bottom: 2px solid #666;
-        }
-
-        .highlight {
-            background-color: #ffc107;
-            color: #000;
-            font-size: 3.5rem; /* 当選シンボルを大きく表示 */
-            text-shadow: none;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
         }
 
         .spin-button {
@@ -80,62 +71,80 @@
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
         }
 
-        /* 当選メッセージの表示エリア */
-        .result-message {
-            margin-top: 30px;
-            font-size: 2rem;
-            color: #ffc107;
-            text-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
-        }
-
-        /* リール回転のアニメーション */
+        /* リールの数字を回転させるアニメーション */
         @keyframes spin {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-300%); }
-        }
-
-        .spinning {
-            animation: spin 1s infinite linear;
+            100% { transform: translateY(-900px); } /* 10個分の数字を回転 */
         }
     </style>
 </head>
 <body>
-    <h1>ゴージャスなスロットマシン</h1>
+    <h1>金額スロットマシン</h1>
     <div class="slot-machine">
-        <div id="reel" class="reel">
-            <div class="symbol">7</div>
-            <div class="symbol">5</div>
-            <div class="symbol">3</div>
-            <div class="symbol">1</div>
+        <div class="reel" id="reel1">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+        </div>
+        <div class="reel" id="reel2">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+        </div>
+        <div class="reel" id="reel3">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+        </div>
+        <div class="reel" id="reel4">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
         </div>
     </div>
     <button class="spin-button" onclick="spin()">スピン！</button>
 
-    <div id="result" class="result-message"></div>
-
     <script>
-        const reel = document.getElementById("reel");
-        const result = document.getElementById("result");
-        
+        // スロットリールをスピンさせる関数
         function spin() {
-            const symbols = ['7', '5', '3', '1'];
-            const randomIndex = Math.floor(Math.random() * symbols.length);
+            const targetValues = [1, 0, 0, 0]; // 表示したい金額（例: ￥1000）
 
-            // アニメーションを追加
-            reel.classList.add("spinning");
-
-            // 当選メッセージをリセット
-            result.innerHTML = "";
-
-            setTimeout(() => {
-                reel.classList.remove("spinning");
-
-                // 当選シンボルの表示
-                reel.style.transform = `translateY(-${randomIndex * 60}px)`;
-
-                // 当選結果を表示
-                result.innerHTML = `おめでとう！${symbols[randomIndex]}当選！`;
-            }, 2000);
+            document.querySelectorAll('.reel').forEach((reel, index) => {
+                const randomDuration = Math.random() * 2 + 3; // 3秒〜5秒のランダムなスピン時間
+                reel.style.transition = `transform ${randomDuration}s ease-out`;
+                
+                // 最終目的の数字に合わせてリールを停止させる
+                const targetPosition = targetValues[index] * -100; // 1桁あたりの高さを100pxとする
+                reel.style.transform = `translateY(${targetPosition}px)`;
+            });
         }
     </script>
 </body>
