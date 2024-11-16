@@ -3,25 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>簡単スロットゲーム</title>
+    <title>スロットマシン</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; }
-        #slot { font-size: 50px; }
-        button { margin-top: 20px; padding: 10px 20px; font-size: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .slot-machine {
+            margin: 50px auto;
+            width: 300px;
+            height: 200px;
+            border: 5px solid #333;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .result {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .spin-button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .spin-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
-    <h1>スロットゲーム</h1>
-    <div id="slot">🍒🍋🍇</div>
-    <button onclick="spin()">回す</button>
+    <h1>スロットマシン</h1>
+    <div class="slot-machine">
+        <div id="result" class="result">？？？</div>
+    </div>
+    <button class="spin-button" onclick="spin()">スピン！</button>
 
     <script>
+        // 賞金リスト
+        const prizes = [
+            "1等: 10,000円",
+            "2等: 5,000円",
+            "3等: 1,000円",
+            "4等: 500円",
+            "5等: 100円"
+        ];
+
+        // スロットをスピンする関数
         function spin() {
-            const items = ['🍒', '🍋', '🍇', '🍉', '🍌'];
-            const slot = document.getElementById('slot');
-            slot.innerHTML = items[Math.floor(Math.random() * items.length)] +
-                             items[Math.floor(Math.random() * items.length)] +
-                             items[Math.floor(Math.random() * items.length)];
+            // スロットを回しているようなアニメーション
+            const resultElement = document.getElementById("result");
+            resultElement.textContent = "スピン中...";
+            
+            // 少し待って結果を表示
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * prizes.length);
+                resultElement.textContent = prizes[randomIndex];
+            }, 2000);
         }
     </script>
 </body>
