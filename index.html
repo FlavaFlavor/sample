@@ -3,116 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todoリスト</title>
+    <title>立体感のあるスロットマシン</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #282c34;
+            color: white;
+            text-align: center;
             margin: 0;
             padding: 0;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 2.5rem;
+            color: #ffc107;
+            text-shadow: 0 0 20px rgba(255, 193, 7, 0.8); /* ゴールドの光 */
+        }
+
+        .slot-machine {
+            margin: 50px auto;
+            width: 220px;
+            height: 240px;
+            border: 10px solid #ffc107; /* ゴールドの枠 */
+            border-radius: 20px;
+            background: radial-gradient(circle at top, #565656, #282c34);
+            box-shadow: 0 0 30px rgba(255, 193, 7, 0.8), 0 0 60px rgba(255, 255, 255, 0.2); /* 光の反射 */
+            perspective: 1000px; /* 3Dの奥行き効果 */
+            position: relative;
+        }
+
+        .reel-content {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease-out;
+        }
+
+        .symbol {
+            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px #ffc107;
+            background: linear-gradient(145deg, #333, #000);
+            border-bottom: 2px solid #444;
         }
-        .todo-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
+
+        .spin-button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
             background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), 0 0 40px rgba(0, 255, 0, 0.3); /* 光るボタン */
         }
-        button:hover {
+
+        .spin-button:hover {
             background-color: #218838;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8), 0 0 60px rgba(0, 255, 0, 0.5); /* ホバーで光が強まる */
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+
+        /* リール回転のアニメーション */
+        @keyframes spin {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(360deg); }
         }
-        li {
-            background: #f9f9f9;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        li button {
-            background-color: #dc3545;
-            border: none;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        li button:hover {
-            background-color: #c82333;
+
+        /* スピン中のリールアニメーション (3D効果) */
+        .spinning {
+            animation: spin 1.2s infinite ease-in-out;
         }
     </style>
 </head>
 <body>
-
-    <div class="todo-container">
-        <h1>Todoリスト</h1>
-        <input type="text" id="todo-input" placeholder="新しいタスクを入力">
-        <button onclick="addTodo()">追加</button>
-        <ul id="todo-list">
-            <!-- Todoアイテムがここに追加されます -->
-        </ul>
+    <h1>立体感のあるスロットマシン</h1>
+    <div class="slot-machine">
+        <div id="reel" class="reel-content">
+            <div class="symbol">10,000円</div>
+            <div class="symbol">5,000円</div>
+            <div class="symbol">1,000円</div>
+            <div class="symbol">500円</div>
+            <div class="symbol">100円</div>
+        </div>
     </div>
+    <button class="spin-button" onclick="spin()">スピン！</button>
 
     <script>
-        function addTodo() {
-            const input = document.getElementById("todo-input");
-            const todoText = input.value.trim();
+        // スロットリールをスピンさせる関数
+        function spin() {
+            const reel = document.getElementById("reel");
 
-            if (todoText === "") {
-                alert("タスクを入力してください！");
-                return;
-            }
+            // リールをスピンさせるクラスを追加
+            reel.classList.add("spinning");
 
-            const ul = document.getElementById("todo-list");
-            const li = document.createElement("li");
+            // アニメーションを2秒後に停止し、結果を表示
+            setTimeout(() => {
+                reel.classList.remove("spinning");
 
-            const span = document.createElement("span");
-            span.textContent = todoText;
+                // ランダムにリールの位置を決定
+                const symbols = ['10,000円', '5,000円', '1,000円', '500円', '100円'];
+                const randomIndex = Math.floor(Math.random() * symbols.length);
 
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "削除";
-            deleteButton.onclick = function() {
-                ul.removeChild(li);
-            };
+                // リールの内容を更新
+                reel.style.transform = `rotateX(${randomIndex * 72}deg)`; // 72度ずつ回転（5つのシンボル）
 
-            li.appendChild(span);
-            li.appendChild(deleteButton);
-            ul.appendChild(li);
-
-            // 入力欄をクリアする
-            input.value = "";
+                // リールに表示されるシンボルを更新
+                reel.children[0].textContent = symbols[randomIndex];
+            }, 2000); // 2秒後に停止
         }
     </script>
-
 </body>
 </html>
