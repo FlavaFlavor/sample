@@ -3,119 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>豪華なスロットマシン</title>
+    <title>Todoリスト</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #282c34;
-            color: white;
-            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-        }
-
-        h1 {
-            margin-top: 50px;
-            font-size: 2.5rem;
-            color: #ffc107;
-        }
-
-        .slot-machine {
-            margin: 50px auto;
-            width: 200px;
-            height: 200px;
-            border: 8px solid #ffc107; /* ゴールド風の枠 */
-            border-radius: 15px;
-            background: linear-gradient(145deg, #333, #000);
-            box-shadow: 0 0 20px rgba(255, 193, 7, 0.8);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .reel-content {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .symbol {
-            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 10px #ffc107;
+            height: 100vh;
         }
-
-        .spin-button {
-            margin-top: 20px;
-            padding: 15px 30px;
-            font-size: 1.5rem;
+        .todo-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
             background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
         }
-
-        .spin-button:hover {
+        button:hover {
             background-color: #218838;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
         }
-
-        /* リール回転のアニメーション */
-        @keyframes spin {
-            0% { top: 0; }
-            100% { top: -180px; }
+        ul {
+            list-style-type: none;
+            padding: 0;
         }
-
-        /* スピン中のリールアニメーション */
-        .spinning {
-            animation: spin 0.8s infinite linear;
+        li {
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li button {
+            background-color: #dc3545;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        li button:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
 <body>
-    <h1>豪華なスロットマシン</h1>
-    <div class="slot-machine">
-        <div id="reel" class="reel-content">
-            <div class="symbol">10,000円</div>
-            <div class="symbol">5,000円</div>
-            <div class="symbol">1,000円</div>
-            <div class="symbol">500円</div>
-            <div class="symbol">100円</div>
-        </div>
+
+    <div class="todo-container">
+        <h1>Todoリスト</h1>
+        <input type="text" id="todo-input" placeholder="新しいタスクを入力">
+        <button onclick="addTodo()">追加</button>
+        <ul id="todo-list">
+            <!-- Todoアイテムがここに追加されます -->
+        </ul>
     </div>
-    <button class="spin-button" onclick="spin()">スピン！</button>
 
     <script>
-        // スロットリールをスピンさせる関数
-        function spin() {
-            const reel = document.getElementById("reel");
+        function addTodo() {
+            const input = document.getElementById("todo-input");
+            const todoText = input.value.trim();
 
-            // リールをスピンさせるクラスを追加
-            reel.classList.add("spinning");
+            if (todoText === "") {
+                alert("タスクを入力してください！");
+                return;
+            }
 
-            // アニメーションを2秒後に停止し、結果を表示
-            setTimeout(() => {
-                reel.classList.remove("spinning");
+            const ul = document.getElementById("todo-list");
+            const li = document.createElement("li");
 
-                // ランダムにリールの位置を決定
-                const symbols = ['10,000円', '5,000円', '1,000円', '500円', '100円'];
-                const randomIndex = Math.floor(Math.random() * symbols.length);
+            const span = document.createElement("span");
+            span.textContent = todoText;
 
-                // リールの内容を更新
-                reel.style.top = `-${randomIndex * 60}px`;
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "削除";
+            deleteButton.onclick = function() {
+                ul.removeChild(li);
+            };
 
-                // リールに表示されるシンボルを更新
-                reel.children[0].textContent = symbols[randomIndex];
-            }, 2000); // 2秒後に停止
+            li.appendChild(span);
+            li.appendChild(deleteButton);
+            ul.appendChild(li);
+
+            // 入力欄をクリアする
+            input.value = "";
         }
     </script>
+
 </body>
 </html>
