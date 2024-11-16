@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>当選結果がわかりやすいスロットマシン</title>
+    <title>当選メッセージ & 停止アニメーション付きスロットマシン</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -40,7 +40,6 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* スムーズに停止 */
         }
 
         .symbol {
@@ -81,20 +80,17 @@
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
         }
 
-        /* リール回転のアニメーション */
-        @keyframes spin {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-300%); }
-        }
-
-        /* スピン中のリールアニメーション */
-        .spinning {
-            animation: spin 1s infinite linear;
+        /* 当選メッセージの表示エリア */
+        .result-message {
+            margin-top: 30px;
+            font-size: 1.5rem;
+            color: #ffc107;
+            text-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
         }
     </style>
 </head>
 <body>
-    <h1>当選結果がわかりやすいスロットマシン</h1>
+    <h1>当選メッセージ付きスロットマシン</h1>
     <div class="slot-machine">
         <div id="reel" class="reel">
             <div class="symbol">10,000円</div>
@@ -106,30 +102,57 @@
     </div>
     <button class="spin-button" onclick="spin()">スピン！</button>
 
+    <div id="result" class="result-message"></div>
+
     <script>
+        // スロットマシンのシンボル
+        const symbols = ['10,000円', '5,000円', '1,000円', '500円', '100円'];
+        let isSpinning = false; // スピン中かどうかのフラグ
+
+        // スロットリールをスピンさせる関数
         function spin() {
+            if (isSpinning) return; // スピン中にボタンを連打できないようにする
+            isSpinning = true;
+
             const reel = document.getElementById("reel");
+            const result = document.getElementById("result");
 
             // リールをスピンさせるクラスを追加
             reel.classList.add("spinning");
 
             // 既存のハイライトを削除
-            const symbols = reel.querySelectorAll('.symbol');
-            symbols.forEach(symbol => symbol.classList.remove('highlight'));
+            const symbolElements = reel.querySelectorAll('.symbol');
+            symbolElements.forEach(symbol => symbol.classList.remove('highlight'));
 
-            // アニメーションを2秒後に停止し、結果を表示
-            setTimeout(() => {
-                reel.classList.remove("spinning");
+            // 当選メッセージをリセット
+            result.innerHTML = "";
 
-                // ランダムにリールの位置を決定
+            // スピンのアニメーションを段階的に減速させる
+            let spinCount = 0;
+            const spinInterval = setInterval(() => {
+                // リールを高速で上下に回転させる
                 const randomIndex = Math.floor(Math.random() * symbols.length);
-
-                // リールの位置を更新して停止
                 reel.style.transform = `translateY(-${randomIndex * 60}px)`;
+                spinCount++;
 
-                // 当選シンボルをハイライト
-                symbols[randomIndex].classList.add('highlight');
-            }, 2000); // 2秒後に停止
+                // 徐々に停止する条件
+                if (spinCount > 20) { // 20回転以降に徐々に停止
+                    clearInterval(spinInterval); // 回転を停止
+
+                    // 最終停止位置をランダムで決定
+                    const finalIndex = Math.floor(Math.random() * symbols.length);
+                    reel.style.transform = `translateY(-${finalIndex * 60}px)`;
+
+                    // 当選シンボルをハイライト
+                    symbolElements[finalIndex].classList.add('highlight');
+
+                    // 当選メッセージを表示
+                    result.innerHTML = `おめでとう！${symbols[finalIndex]}当選！`;
+
+                    // スピン終了フラグをリセット
+                    isSpinning = false;
+                }
+            }, 100); // 最初は速い間隔で回転し始める
         }
     </script>
 </body>
