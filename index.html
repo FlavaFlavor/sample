@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>立体感のあるスロットマシン</title>
+    <title>自然な回転のスロットマシン</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -18,28 +18,28 @@
             margin-top: 50px;
             font-size: 2.5rem;
             color: #ffc107;
-            text-shadow: 0 0 20px rgba(255, 193, 7, 0.8); /* ゴールドの光 */
+            text-shadow: 0 0 20px rgba(255, 193, 7, 0.8);
         }
 
         .slot-machine {
             margin: 50px auto;
-            width: 220px;
-            height: 240px;
-            border: 10px solid #ffc107; /* ゴールドの枠 */
-            border-radius: 20px;
-            background: radial-gradient(circle at top, #565656, #282c34);
-            box-shadow: 0 0 30px rgba(255, 193, 7, 0.8), 0 0 60px rgba(255, 255, 255, 0.2); /* 光の反射 */
-            perspective: 1000px; /* 3Dの奥行き効果 */
+            width: 200px;
+            height: 180px;
+            border: 10px solid #ffc107;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #333, #000);
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.8);
+            overflow: hidden;
             position: relative;
         }
 
-        .reel-content {
+        .reel {
             position: absolute;
             top: 0;
             width: 100%;
             height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
         }
 
         .symbol {
@@ -51,8 +51,8 @@
             font-weight: bold;
             color: #fff;
             text-shadow: 0 0 10px #ffc107;
-            background: linear-gradient(145deg, #333, #000);
-            border-bottom: 2px solid #444;
+            background: linear-gradient(145deg, #444, #222);
+            border-bottom: 2px solid #333;
         }
 
         .spin-button {
@@ -65,30 +65,30 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), 0 0 40px rgba(0, 255, 0, 0.3); /* 光るボタン */
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
         }
 
         .spin-button:hover {
             background-color: #218838;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8), 0 0 60px rgba(0, 255, 0, 0.5); /* ホバーで光が強まる */
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
         }
 
         /* リール回転のアニメーション */
         @keyframes spin {
-            0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(360deg); }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-300%); }
         }
 
-        /* スピン中のリールアニメーション (3D効果) */
+        /* スピン中のリールアニメーション */
         .spinning {
-            animation: spin 1.2s infinite ease-in-out;
+            animation: spin 1s infinite linear;
         }
     </style>
 </head>
 <body>
-    <h1>立体感のあるスロットマシン</h1>
+    <h1>自然な回転のスロットマシン</h1>
     <div class="slot-machine">
-        <div id="reel" class="reel-content">
+        <div id="reel" class="reel">
             <div class="symbol">10,000円</div>
             <div class="symbol">5,000円</div>
             <div class="symbol">1,000円</div>
@@ -115,10 +115,7 @@
                 const randomIndex = Math.floor(Math.random() * symbols.length);
 
                 // リールの内容を更新
-                reel.style.transform = `rotateX(${randomIndex * 72}deg)`; // 72度ずつ回転（5つのシンボル）
-
-                // リールに表示されるシンボルを更新
-                reel.children[0].textContent = symbols[randomIndex];
+                reel.style.transform = `translateY(-${randomIndex * 60}px)`;
             }, 2000); // 2秒後に停止
         }
     </script>
