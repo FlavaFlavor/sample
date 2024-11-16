@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自然な回転のスロットマシン</title>
+    <title>当選結果がわかりやすいスロットマシン</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -40,6 +40,7 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* スムーズに停止 */
         }
 
         .symbol {
@@ -53,6 +54,13 @@
             text-shadow: 0 0 10px #ffc107;
             background: linear-gradient(145deg, #444, #222);
             border-bottom: 2px solid #333;
+        }
+
+        .highlight {
+            background-color: #ffc107;
+            color: #000;
+            font-size: 2rem; /* 当選シンボルを大きく表示 */
+            text-shadow: none;
         }
 
         .spin-button {
@@ -86,7 +94,7 @@
     </style>
 </head>
 <body>
-    <h1>自然な回転のスロットマシン</h1>
+    <h1>当選結果がわかりやすいスロットマシン</h1>
     <div class="slot-machine">
         <div id="reel" class="reel">
             <div class="symbol">10,000円</div>
@@ -99,23 +107,28 @@
     <button class="spin-button" onclick="spin()">スピン！</button>
 
     <script>
-        // スロットリールをスピンさせる関数
         function spin() {
             const reel = document.getElementById("reel");
 
             // リールをスピンさせるクラスを追加
             reel.classList.add("spinning");
 
+            // 既存のハイライトを削除
+            const symbols = reel.querySelectorAll('.symbol');
+            symbols.forEach(symbol => symbol.classList.remove('highlight'));
+
             // アニメーションを2秒後に停止し、結果を表示
             setTimeout(() => {
                 reel.classList.remove("spinning");
 
                 // ランダムにリールの位置を決定
-                const symbols = ['10,000円', '5,000円', '1,000円', '500円', '100円'];
                 const randomIndex = Math.floor(Math.random() * symbols.length);
 
-                // リールの内容を更新
+                // リールの位置を更新して停止
                 reel.style.transform = `translateY(-${randomIndex * 60}px)`;
+
+                // 当選シンボルをハイライト
+                symbols[randomIndex].classList.add('highlight');
             }, 2000); // 2秒後に停止
         }
     </script>
