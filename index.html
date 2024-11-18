@@ -109,7 +109,7 @@
         /* リールの数字を回転させるアニメーション */
         @keyframes spin {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-900px); } /* 10個分の数字を回転 */
+            100% { transform: translateY(-1000px); } /* 10個分の数字を回転 */
         }
 
         /* メディアクエリでさらに小さい画面用の調整 */
@@ -251,6 +251,9 @@
                 // 最終目的の数字に合わせてリールを停止させる
                 const targetPosition = displayValues[index - 1] * -100; // 1桁あたりの高さを100pxとする
                 reel.style.transform = `translateY(${targetPosition}px)`;
+
+                // アニメーションを追加して、回転しているように見せる
+                reel.style.animation = `spin ${randomDuration}s ease-out`;
             });
 
             // 当選結果を表示
