@@ -97,6 +97,15 @@
             text-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
         }
 
+        /* 豪華な当選メッセージスタイル */
+        .winner {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff5733;
+            text-shadow: 0 0 15px rgba(255, 87, 51, 1), 0 0 30px rgba(255, 87, 51, 0.8);
+            margin-top: 20px;
+        }
+
         /* リールの数字を回転させるアニメーション */
         @keyframes spin {
             0% { transform: translateY(0); }
@@ -120,6 +129,10 @@
 
             .result-message {
                 font-size: 1.5rem;
+            }
+
+            .winner {
+                font-size: 2rem;
             }
         }
     </style>
@@ -205,15 +218,24 @@
             setTimeout(() => {
                 const amount = targetValues.join('');
                 const result = document.getElementById("result");
+                let winnerMessage = '';
 
-                // 当選メッセージを表示
+                // 当選条件と賞金
                 if (amount === "7777") {
-                    result.innerHTML = `おめでとう！1等当選！ ￥20,000`;
+                    winnerMessage = `1等当選！ ￥22,000`;
                 } else if (amount.startsWith("7")) {
-                    result.innerHTML = `おめでとう！2等当選！ ￥${amount}`;
+                    winnerMessage = `2等当選！ ￥20,000`;
+                } else if (amount === "6666") {
+                    winnerMessage = `3等当選！ ￥16,500`;
+                } else if (amount.startsWith("6")) {
+                    winnerMessage = `4等当選！ ￥15,000`;
                 } else {
                     result.innerHTML = `￥${amount} 当選！`;
+                    return;
                 }
+
+                // 豪華な当選メッセージの表示
+                result.innerHTML = `<span class="winner">${winnerMessage}</span>`;
             }, 4000); // 4秒後に結果を表示
         }
     </script>
