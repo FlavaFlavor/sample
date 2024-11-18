@@ -15,23 +15,26 @@
         }
 
         h1 {
-            margin-top: 30px;
-            font-size: 3rem;
+            margin-top: 20px;
+            font-size: 2.5rem;
             color: #ffc107;
             text-shadow: 0 0 10px rgba(255, 193, 7, 1); /* ゴールドの光 */
         }
 
-        /* 画像のスタイル */
+        /* 画像のスタイル (スマートフォン対応) */
         .slot-image {
-            margin-top: 20px;
-            width: 300px; /* 画像の幅を調整 */
+            width: 90%; /* 画面幅の90%に設定 */
+            max-width: 500px; /* 最大幅は500px */
             height: auto; /* アスペクト比を保つ */
+            margin: 0 auto;
+            display: block;
             box-shadow: 0 0 20px rgba(255, 193, 7, 0.8); /* 光る枠 */
         }
 
         .slot-machine {
-            margin: 50px auto;
-            width: 400px;
+            margin: 20px auto;
+            width: 90%; /* 画面幅の90%に設定 */
+            max-width: 400px; /* 最大幅は400px */
             height: 100px;
             border: 5px solid #ffc107; /* ゴールドの枠 */
             border-radius: 10px;
@@ -70,8 +73,8 @@
 
         .spin-button {
             margin-top: 20px;
-            padding: 15px 30px;
-            font-size: 1.8rem;
+            padding: 12px 25px;
+            font-size: 1.5rem;
             background-color: #28a745;
             color: white;
             border: none;
@@ -88,8 +91,8 @@
 
         /* 当選メッセージの表示エリア */
         .result-message {
-            margin-top: 30px;
-            font-size: 2rem;
+            margin-top: 20px;
+            font-size: 1.8rem;
             color: #ffc107;
             text-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
         }
@@ -98,6 +101,26 @@
         @keyframes spin {
             0% { transform: translateY(0); }
             100% { transform: translateY(-900px); } /* 10個分の数字を回転 */
+        }
+
+        /* メディアクエリでさらに小さい画面用の調整 */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .reel span {
+                font-size: 2.5rem;
+            }
+
+            .spin-button {
+                padding: 10px 20px;
+                font-size: 1.2rem;
+            }
+
+            .result-message {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -185,7 +208,7 @@
 
                 // 当選メッセージを表示
                 if (amount === "7777") {
-                    result.innerHTML = `おめでとう！1等当選！ ￥${amount}`;
+                    result.innerHTML = `おめでとう！1等当選！ ￥20,000`;
                 } else if (amount.startsWith("7")) {
                     result.innerHTML = `おめでとう！2等当選！ ￥${amount}`;
                 } else {
