@@ -34,7 +34,7 @@
         .slot-machine {
             margin: 20px auto;
             width: 90%; /* 画面幅の90%に設定 */
-            max-width: 400px; /* 最大幅は400px */
+            max-width: 500px; /* 最大幅は500px */
             height: 100px;
             border: 5px solid #ffc107; /* ゴールドの枠 */
             border-radius: 10px;
@@ -193,6 +193,18 @@
             <span>8</span>
             <span>9</span>
         </div>
+        <div class="reel" id="reel5">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+        </div>
     </div>
     <button class="spin-button" onclick="spin()">スピン！</button>
 
@@ -201,40 +213,49 @@
     <script>
         // スロットリールをスピンさせる関数
         function spin() {
-            const targetValues = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]; // ランダムな4つの数字
+            let displayValues = []; // スロットに表示する数字
+            let winnerMessage = '';
 
+            // 当選条件をランダムに決定
+            const randomOutcome = Math.random();
+
+            if (randomOutcome < 0.05) {
+                // 1等: 「22000」固定表示
+                displayValues = [2, 2, 0, 0, 0];
+                winnerMessage = `1等当選！ ￥22,000`;
+            } else if (randomOutcome < 0.15) {
+                // 2等: 「20000」固定表示
+                displayValues = [2, 0, 0, 0, 0];
+                winnerMessage = `2等当選！ ￥20,000`;
+            } else if (randomOutcome < 0.25) {
+                // 3等: 「16500」固定表示
+                displayValues = [1, 6, 5, 0, 0];
+                winnerMessage = `3等当選！ ￥16,500`;
+            } else if (randomOutcome < 0.4) {
+                // 4等: 「15000」固定表示
+                displayValues = [1, 5, 0, 0, 0];
+                winnerMessage = `4等当選！ ￥15,000`;
+            } else {
+                // それ以外: ランダムな5桁の数字を表示
+                displayValues = Array.from({ length: 5 }, () => Math.floor(Math.random() * 10));
+                winnerMessage = `￥${displayValues.join('')} 当選！`;
+            }
+
+            // スロットの各リールを回転させる
             document.querySelectorAll('.reel').forEach((reel, index) => {
                 if (index === 0) return; // 一番左の￥は固定なのでスキップ
 
                 const randomDuration = Math.random() * 2 + 3; // 3秒〜5秒のランダムなスピン時間
                 reel.style.transition = `transform ${randomDuration}s ease-out`;
-                
+
                 // 最終目的の数字に合わせてリールを停止させる
-                const targetPosition = targetValues[index - 1] * -100; // 1桁あたりの高さを100pxとする
+                const targetPosition = displayValues[index - 1] * -100; // 1桁あたりの高さを100pxとする
                 reel.style.transform = `translateY(${targetPosition}px)`;
             });
 
             // 当選結果を表示
             setTimeout(() => {
-                const amount = targetValues.join('');
                 const result = document.getElementById("result");
-                let winnerMessage = '';
-
-                // 当選条件と賞金
-                if (amount === "7777") {
-                    winnerMessage = `1等当選！ ￥22,000`;
-                } else if (amount.startsWith("7")) {
-                    winnerMessage = `2等当選！ ￥20,000`;
-                } else if (amount === "6666") {
-                    winnerMessage = `3等当選！ ￥16,500`;
-                } else if (amount.startsWith("6")) {
-                    winnerMessage = `4等当選！ ￥15,000`;
-                } else {
-                    result.innerHTML = `￥${amount} 当選！`;
-                    return;
-                }
-
-                // 豪華な当選メッセージの表示
                 result.innerHTML = `<span class="winner">${winnerMessage}</span>`;
             }, 4000); // 4秒後に結果を表示
         }
