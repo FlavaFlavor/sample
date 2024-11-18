@@ -21,6 +21,14 @@
             text-shadow: 0 0 10px rgba(255, 193, 7, 1); /* ゴールドの光 */
         }
 
+        /* 画像のスタイル */
+        .slot-image {
+            margin-top: 20px;
+            width: 300px; /* 画像の幅を調整 */
+            height: auto; /* アスペクト比を保つ */
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.8); /* 光る枠 */
+        }
+
         .slot-machine {
             margin: 50px auto;
             width: 400px;
@@ -95,6 +103,10 @@
 </head>
 <body>
     <h1>金額スロットマシン</h1>
+
+    <!-- 画像を追加 -->
+    <img src="ヤマダロト1.png" alt="ヤマダロト" class="slot-image">
+
     <div class="slot-machine">
         <div class="reel" id="symbol"><span class="symbol">￥</span></div> <!-- 左側の固定シンボル -->
         <div class="reel" id="reel1">
